@@ -16,30 +16,32 @@ public class PROYECTO_POO {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Ingrese la cantidad de materias: ");
-        int numMaterias = sc.nextInt();
-        double promedio = 0;
-        for (int i = 1; i <= numMaterias; i++) {
-            System.out.println("Materia " + i + ":");
-            System.out.print("Asistencia (10%): ");
-            double asistencia = sc.nextDouble();
-            System.out.print("Examen (60%): ");
-            double examen = sc.nextDouble();
-            System.out.print("Tareas (20%): ");
-            double tareas = sc.nextDouble();
-            System.out.print("Participación (10%): ");
-            double participacion = sc.nextDouble();
-            double calificacionFinal = (asistencia * 0.1) + (examen * 0.6) + (tareas * 0.2) + (participacion * 0.1);
-            System.out.println("Calificación final: " + calificacionFinal);
-            promedio += calificacionFinal;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Ingrese el nombre del alumno: ");
+        String nombreAlumno = scanner.nextLine();
+        Alumno alumno = new Alumno(nombreAlumno);
+
+        System.out.print("¿Cuántas materias tiene el alumno? ");
+        int numMaterias = Integer.parseInt(scanner.nextLine());
+
+        for (int i = 0; i < numMaterias; i++) {
+            System.out.print("Ingrese el nombre de la materia " + (i + 1) + ": ");
+            String nombreMateria = scanner.nextLine();
+            Materia materia = new Materia(nombreMateria);
+
+            try {
+                System.out.print("Ingrese la calificación de la materia: ");
+                double calificacion = Double.parseDouble(scanner.nextLine());
+                materia.setCalificacion(calificacion);
+            } catch (NumberFormatException e) {
+                System.out.println("La calificación ingresada no es válida. Se asignará 0.0 por defecto.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+
+            alumno.agregarMateria(materia);
         }
-        promedio /= numMaterias;
-        System.out.println("Promedio general: " + promedio);
-        if (promedio >= 7) {
-            System.out.println("ACREDITA");
-        } else {
-            System.out.println("NO ACREDITA");
+
+        alumno.mostrarCalificaciones();
         }
     }
-}
